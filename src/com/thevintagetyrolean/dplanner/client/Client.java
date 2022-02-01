@@ -1,0 +1,115 @@
+package com.thevintagetyrolean.dplanner.client;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+public class Client {
+
+public static void main(String[] args) {
+		System.out.println("Welcome to TheVintageTyrolean's Day Planner.");
+		System.out.println("Loading primary config...");
+		FileReader r;
+		BufferedReader output;
+		FileWriter w;
+		BufferedWriter input;
+		Scanner sc = new Scanner(System.in);
+		try {
+			r = new FileReader("startup.cfg");
+			output = new BufferedReader(r);
+			System.out.println("Welcome user " + output.readLine());
+			String entry;
+			if((entry = output.readLine()) == null) {
+				System.out.println("No entries detected. Please input an entry you wish to include in the file and confirm with Enter. To finish, press enter with no input.");
+				w = new FileWriter("startup.cfg");
+				input = new BufferedWriter(w);
+				while(!(entry = sc.nextLine()).equals("")) {
+					input.append(entry);
+					input.flush();
+				}
+				w.close();
+				r.close();
+				sc.close();
+				return;
+				
+			} else {
+				ArrayList<String> entryList = new ArrayList<String>();
+				do {
+					entryList.add(entry);
+				} while((entry = output.readLine()) != null);
+				System.out.println("Entries read. What will you do? \n \"Generate\" List | \"Add\" entries | \"Modify\" Entries | \"Delete\" Entries");
+				while(true) {
+				entry = sc.nextLine();
+				if(entry.equals("Generate")) {
+					GenerateList(entryList, sc);
+					break;
+				} else if(entry.equals("Add")) {
+					
+				} else if(entry.equals("Modify")) {
+					
+				} else if(entry.equals("Delete")) {
+					
+				} else {
+					System.out.println("Invalid option.");
+				}
+				}
+				r.close();
+				
+				return;
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Primary config file missing.");
+			File entry = new File("startup.cfg");
+			try {
+				entry.createNewFile();
+				System.out.println("Primary config file created.");
+				System.out.println("Please input your username: ");
+				String username = sc.nextLine();
+				w = new FileWriter("startup.cfg");
+				input = new BufferedWriter(w);
+				input.append(username);	
+				input.flush();
+				String ipt;
+				System.out.println("File created. Please input an entry you wish to include in the file and confirm with Enter. To finish, press enter with no input.");
+				while(!(ipt = sc.nextLine()).equals("")) {
+					input.newLine();
+					input.append(ipt);
+					input.flush();
+				}
+				w.close();
+				return;
+			} catch (IOException e1) {
+		
+				e1.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block	
+			e.printStackTrace();
+		}
+		
+
+	}
+static void GenerateList(ArrayList<String> entries, Scanner sc) {
+	System.out.println("Input how many activities to generate:");
+	int num = sc.nextInt();
+	Random gen = new Random();
+	for(int i = 0; i < num; i++) {
+		System.out.println("" + (i+1) + ": " + entries.get(gen.nextInt(entries.size())));
+	}
+}
+static void AppendToList(ArrayList<String> entries, Scanner sc) {
+	System.out.println("What would you like to add to the list?");
+	String s = sc.nextLine();
+	entries.add(s);
+	
+	
+}
+}
