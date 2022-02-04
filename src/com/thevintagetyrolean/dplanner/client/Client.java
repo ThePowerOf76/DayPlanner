@@ -23,7 +23,8 @@ public static void main(String[] args) {
 		try {
 			r = new FileReader("startup.cfg");
 			output = new BufferedReader(r);
-			System.out.println("Welcome user " + output.readLine());
+			String username = output.readLine();
+			System.out.println("Welcome user " + username);
 			String entry;
 			if((entry = output.readLine()) == null) {
 				System.out.println("No entries detected. Please input an entry you wish to include in the file and confirm with Enter. To finish, press enter with no input.");
@@ -43,24 +44,36 @@ public static void main(String[] args) {
 				do {
 					entryList.add(entry);
 				} while((entry = output.readLine()) != null);
-				System.out.println("Entries read. What will you do? \n \"Generate\" List | \"Add\" entries | \"Modify\" Entries | \"Delete\" Entries");
+				System.out.println("Entries read.");
+				System.out.println("What will you do? \n \"Generate\" List | \"Add\" entries | \"Modify\" Entries | \"Delete\" Entries | \"Exit\"");
+				w = new FileWriter("startup.cfg");
+				input = new BufferedWriter(w);
 				while(true) {
 				entry = sc.nextLine();
-				if(entry.equals("Generate")) {
+				if(entry.toLowerCase().equals("generate")) {
 					GenerateList(entryList, sc);
 					break;
-				} else if(entry.equals("Add")) {
-					
-				} else if(entry.equals("Modify")) {
-					
-				} else if(entry.equals("Delete")) {
-					
+				} else if(entry.toLowerCase().equals("add")) {
+					AppendToList(entryList, sc);
+					System.out.println("Syncing list");
+					SyncList(entryList, username, input);
+				} else if(entry.toLowerCase().equals("modify")) {
+					ModifyEntry(entryList, sc);
+					System.out.println("Syncing list");
+					SyncList(entryList, username, input);
+				} else if(entry.toLowerCase().equals("delete")) {
+					int len = DeleteEntry(entryList, sc);
+					System.out.println("Syncing list");
+					SyncList(entryList, username, input);
+				} else if(entry.toLowerCase().equals("exit")) {
+					SyncList(entryList, username, input);
+					break;
 				} else {
 					System.out.println("Invalid option.");
 				}
 				}
 				r.close();
-				
+				w.close();
 				return;
 			}
 			
@@ -111,5 +124,43 @@ static void AppendToList(ArrayList<String> entries, Scanner sc) {
 	entries.add(s);
 	
 	
+}
+static void SyncList(ArrayList<String> entries, String username, BufferedWriter input) throws IOException {
+	for(int i = 0; i <= entries.size(); i++) {
+		if(i == 0) {
+			input.write(username + "\n");
+			input.flush();
+		} else {
+			input.write(entries.get(i-1) + "\n");
+			input.flush();
+		}
+	}
+		
+}
+	
+static void ModifyEntry(ArrayList<String> entries, Scanner sc) {
+	System.out.println("Which entry would you like to modify?");
+	for(int i = 0; i < entries.size(); i++) {
+		System.out.println(String.format("%d. %s", i+1, entries.get(i)));
+	}
+	System.out.println("\n");
+	int choice = sc.nextInt();
+	sc.nextLine();
+	System.out.println("Input modified entry:");
+	String mod = sc.nextLine();
+	entries.set(choice-1, mod);
+	
+	
+}
+static int DeleteEntry(ArrayList<String> entries, Scanner sc) {
+	System.out.println("Which entry would you like to delete?");
+	for(int i = 0; i < entries.size(); i++) {
+		System.out.println(String.format("%d. %s", i+1, entries.get(i)));
+	}
+	System.out.println("\n");
+	int choice = sc.nextInt();
+	entries.remove(choice);
+	
+	return entries.get(entries.size()-1).length();
 }
 }
