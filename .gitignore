@@ -16,7 +16,7 @@
     *.pydevproject
     .metadata
     .gradle
-    bin/
+    bin/*
     tmp/
     *.tmp
     *.bak
@@ -27,7 +27,7 @@
     .loadpath
 
     # Eclipse Core
-    .project
+*.project
 
     # External tool builders
     .externalToolBuilders/
