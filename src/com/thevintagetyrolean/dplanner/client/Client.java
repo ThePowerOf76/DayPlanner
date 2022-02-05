@@ -47,7 +47,6 @@ public static void main(String[] args) {
 				System.out.println("Entries read.");
 				System.out.println("What will you do? \n \"Generate\" List | \"Add\" entries | \"Modify\" Entries | \"Delete\" Entries | \"Exit\"");
 				w = new FileWriter("startup.cfg");
-				input = new BufferedWriter(w);
 				while(true) {
 				entry = sc.nextLine();
 				if(entry.toLowerCase().equals("generate")) {
@@ -56,17 +55,17 @@ public static void main(String[] args) {
 				} else if(entry.toLowerCase().equals("add")) {
 					AppendToList(entryList, sc);
 					System.out.println("Syncing list");
-					SyncList(entryList, username, input);
+					SyncList(entryList, username, w, "startup.cfg");
 				} else if(entry.toLowerCase().equals("modify")) {
 					ModifyEntry(entryList, sc);
 					System.out.println("Syncing list");
-					SyncList(entryList, username, input);
+					SyncList(entryList, username, w, "startup.cfg");
 				} else if(entry.toLowerCase().equals("delete")) {
-					int len = DeleteEntry(entryList, sc);
+					DeleteEntry(entryList, sc);
 					System.out.println("Syncing list");
-					SyncList(entryList, username, input);
+					SyncList(entryList, username, w, "startup.cfg");
 				} else if(entry.toLowerCase().equals("exit")) {
-					SyncList(entryList, username, input);
+					SyncList(entryList, username, w, "startup.cfg");
 					break;
 				} else {
 					System.out.println("Invalid option.");
@@ -125,7 +124,10 @@ static void AppendToList(ArrayList<String> entries, Scanner sc) {
 	
 	
 }
-static void SyncList(ArrayList<String> entries, String username, BufferedWriter input) throws IOException {
+static void SyncList(ArrayList<String> entries, String username, FileWriter w, String fileName) throws IOException {
+	w.close();
+	w = new FileWriter(fileName);
+	BufferedWriter input = new BufferedWriter(w);
 	for(int i = 0; i <= entries.size(); i++) {
 		if(i == 0) {
 			input.write(username + "\n");
@@ -135,6 +137,7 @@ static void SyncList(ArrayList<String> entries, String username, BufferedWriter 
 			input.flush();
 		}
 	}
+	input.close();
 		
 }
 	
