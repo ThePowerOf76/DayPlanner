@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 public class Client {
 
 public static void main(String[] args) {
@@ -51,6 +53,7 @@ public static void main(String[] args) {
 				entry = sc.nextLine();
 				if(entry.toLowerCase().equals("generate")) {
 					GenerateList(entryList, sc);
+					SyncList(entryList, username, w, "startup.cfg");
 					break;
 				} else if(entry.toLowerCase().equals("add")) {
 					AppendToList(entryList, sc);
@@ -110,11 +113,31 @@ public static void main(String[] args) {
 
 	}
 static void GenerateList(ArrayList<String> entries, Scanner sc) {
-	System.out.println("Input how many activities to generate:");
-	int num = sc.nextInt();
+	System.out.println("End generation on what hour?");
+	int maxHR = sc.nextInt();
+	System.out.println("Use Pomodoro technique?");
+	boolean usePom = sc.nextBoolean();
+	int breakLength, activityLength;
+	if(!usePom) {
+		System.out.println("Input activity length(in minutes)");
+		breakLength = sc.nextInt();
+		System.out.println("Input break length(in minutes)");
+		activityLength = sc.nextInt();
+		
+	} else {
+		breakLength = 5;
+		activityLength = 20;
+	}
+	
 	Random gen = new Random();
-	for(int i = 0; i < num; i++) {
-		System.out.println("" + (i+1) + ": " + entries.get(gen.nextInt(entries.size())));
+	LocalTime t = LocalTime.now();
+	for(int i = 0; ;i++) {
+		if(t.getHour() + (i*(activityLength + breakLength)/60) >= maxHR) {
+			break;
+		} else {
+			System.out.println(String.format("%s to %s: %s", t.plusMinutes((activityLength + breakLength)*i).format(DateTimeFormatter.ofPattern("hh:mm a")),t.plusMinutes((i+1)*activityLength + i * breakLength).format(DateTimeFormatter.ofPattern("hh:mm a")), entries.get(gen.nextInt(entries.size()))));
+			System.out.println(String.format("%s to %s: break", t.plusMinutes(activityLength*(i+1) + breakLength*i).format(DateTimeFormatter.ofPattern("hh:mm a")),t.plusMinutes((i+1)*(activityLength + breakLength)).format(DateTimeFormatter.ofPattern("hh:mm a"))));
+		}
 	}
 }
 static void AppendToList(ArrayList<String> entries, Scanner sc) {
