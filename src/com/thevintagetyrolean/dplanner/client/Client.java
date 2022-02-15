@@ -95,7 +95,7 @@ public static void main(String[] args) {
 					ModifyEntry(fileList, sc, true);
 					System.out.println("Syncing list");
 					SyncList(fileList, "startup.cfg");
-				} if(entry.toLowerCase().equals("delete")) {
+				} if(entry.toLowerCase().equals("delete list")) {
 					if(fileList.size() >= 3) {
 					DeleteEntry(fileList, sc, true);
 					System.out.println("Syncing list");
@@ -200,7 +200,8 @@ static void SyncList(ArrayList<String> entries, String fileName) throws IOExcept
 	
 static void ModifyEntry(ArrayList<String> entries, Scanner sc, boolean onFile) throws IOException {
 	System.out.println("Which entry would you like to modify?");
-	for(int i = 0; i < entries.size(); i++) {
+	int i = onFile ? 1 : 0;
+	for( ; i < entries.size(); i++) {
 		System.out.println(String.format("%d. %s", i+1, entries.get(i)));
 	}
 	System.out.println("\n");
@@ -210,9 +211,9 @@ static void ModifyEntry(ArrayList<String> entries, Scanner sc, boolean onFile) t
 	System.out.println("Input modified entry:");
 	String mod = sc.nextLine();
 	if(onFile) {
-	File f = new File(entries.get(choice));
+	File f = new File(entries.get(choice) + ".list");
 	Path source = Paths.get(f.getAbsolutePath());
-	Files.move(source, source.resolveSibling(mod));
+	Files.move(source, source.resolveSibling(mod+".list"));
 	}
 	entries.set(choice, mod);
 	
@@ -233,7 +234,7 @@ static void DeleteEntry(ArrayList<String> entries, Scanner sc, boolean onFile) {
 	System.out.println("Write True to confirm or False to cancel.");
 	} while(sc.nextBoolean());
 	if(onFile) {
-		File f = new File(entries.get(choice));		
+		File f = new File(entries.get(choice)+".list");		
 		System.out.println("Deleting table " + choice + ": " + entries.get(choice));
 		System.out.println("Result: " + f.delete());
 	}
