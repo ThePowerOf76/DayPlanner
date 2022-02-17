@@ -1,0 +1,110 @@
+NAME
+	DayPlanner - a simple app for planning days for very undecisive people.
+SYNOPSIS
+	java -jar DayPlanner.jar
+	java -jar DayPlanner.jar (-n | --no-gui) (-v | --verbose) 
+	java -jar DayPlanner.jar (-h | --help) 
+DESCRIPTION
+	DayPlanner is a simple app for planning your day from now up to a certain hour.
+
+	It starts by default in a GUI mode, which can be changed using the --no-gui parameter, causing the app to launch 
+	in text mode(referred to as TTY mode from now on). The functionality remains the same, but with the default environment 
+	being the terminal.							
+	--verbose parameter is used to display additional debug information, both in GUI and TTY mode.
+	--help displays this page.
+	Inside, the app has support for multiple different lists. The first action after launching the app is to pick 
+	the list on which to operate. You can do so by selecting the appropriate list from the drop-down menu and clicking
+	the "Load" button in GUI mode or typing the number from the list in TTY mode. The list will be loaded into the internal 
+	memory of the program and will be ready to be operated on. If no list has been created yet, the user will be prompted to 
+	create one, using the "Add List" function described below.
+
+	The next menu is the operation menu. In GUI mode, individual options can be used by clicking the appropriate button and
+	in TTY mode, the options have to be typed in, as shown in the quotation marks. The input here is not case-sensitive, so
+	arguments will get accepted even if case is not exact.
+	
+	"Generate" will generate a list of activities from the list picked in the first step.
+	It takes the following input: 
+		-Hour which to end generation on(inputted in 24h format as a simple number, that is 1, 12, 21 etc.)
+		-Whether to use Pomodoro technique(triggered by typing true or false). In that case, the activity time will be
+	set to 20 minutes and break time will be set to 5 minutes. If this argument is true, the next 2 arguments are ommitted.
+		-Activity length(in minutes)
+		-Break length(in minutes)
+	The app will then generate the list of activities, followed by breaks of defined length, until the hour from the first 
+	parameter. It is displayed in the following format:
+		H1:M1 T - H2:M2 T: A
+		H2:M2 T - H3:M3 T: B
+					H- hour
+					M- minute
+					T- AM/PM 
+					A- Activity name
+					B- Break
+	"Add" will append an entry to the list. 
+	It accepts only one parameter and that is the entry in question. The entry is appended on the end of the list and sync it
+	with the file. 
+
+	"Modify" allows the user to change a specific entry. 
+	In GUI mode the user selects the entry to modify from a drop-down menu, inputs the substitute into the text field and 
+	confirms with "Modify" button. In TTY mode, the user is displayed a list of all entries, types in the number of the entry 	
+	to modify and then the new entry to substitute. The list and the file get updated immediately.
+
+	"Delete" allows the user to delete an entry from the list.
+	Functions the same way as "Modify", without the new entry to substitute.
+
+	"Add List" will add a new list to the list picker and create a new file to hold the entries with the same name. 
+	Afterwards, the user will be prompted to add a few entries to the list. Works the same as the "Add" function.
+
+	"Modify List" changes a list in the list picker's and it's corresponding file's name. Works the same as the "Modify"
+	function. 
+	
+	"Delete list" deletes a list from the list picker and the corresponding file. Works the same as the "Delete" function.
+	Does not allow the deletion of the final list(one list must always be present).
+
+	"Exit" synchronises the current list and the list picker and terminates the app.
+
+OPTIONS
+	The following command line parameters are available:
+	
+	-n or --no-gui : Launch the app in TTY mode.
+
+	-v or --verbose : Display additional debug information in the terminal.
+
+	-h or --help : Display this page and terminate.
+
+EXAMPLES
+
+	Launch the app normally:
+
+		java -jar DayPlanner.jar
+
+	Launch the app in TTY/Text mode:
+
+		java -jar DayPlanner.jar --no-gui
+
+		or
+
+		java -jar DayPlanner.jar -n
+
+	Launch the app with additional debug information:
+
+		java -jar DayPlanner.jar --verbose
+
+		or
+
+		java -jar DayPlanner.jar -v
+
+	Launch the app in TTY mode and display additional debug information:
+
+		java -jar DayPlanner.jar -v -n
+
+		or 
+
+		java -jar DayPlanner.jar --no-gui --verbose
+
+
+COPYRIGHT 
+	2022 TheVintageTyrolean
+
+ADDITIONAL INFO
+
+	For additional info visit TheVintageTyrolean's Notabug page to see other projects.
+	All errors with the app should be reported to https://notabug.org/TheVintageTyrolean/DayPlanner/issues
