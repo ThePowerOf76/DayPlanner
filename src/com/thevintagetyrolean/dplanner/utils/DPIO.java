@@ -16,28 +16,30 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class DPIO {
-	public static void AppendToList(ArrayList<String> entries, Scanner sc, boolean onFile) throws IOException {
-		System.out.println("What will you add?");
-		String s = sc.nextLine();
+	public static void AppendToList(ArrayList<String> entries, String s, boolean onFile) throws IOException {
 		entries.add(s);
 		if(onFile) {
 			File f = new File(s + ".list");
 			f.createNewFile();
-			String ipt;
-			FileWriter w = new FileWriter(f);
-			BufferedWriter input = new BufferedWriter(w);
-			System.out.println("File created. Please input an entry you wish to include in the file and confirm with Enter. To finish, press enter with no input.");
-			while(!(ipt = sc.nextLine()).equals("")) {
-				input.newLine();
-				input.append(ipt);
-				input.flush();
-			}
-			w.close();
+			
 		}
 		
 		
 	}
-	public static void GenerateList(ArrayList<String> entries, Scanner sc) {
+	public static void TextDBPopulate(String filename, Scanner sc) throws IOException {
+		File f = new File(filename + ".list");
+		String ipt;
+		FileWriter w = new FileWriter(f);
+		BufferedWriter input = new BufferedWriter(w);
+		System.out.println("File created. Please input an entry you wish to include in the file and confirm with Enter. To finish, press enter with no input.");
+		while(!(ipt = sc.nextLine()).equals("")) {
+			input.newLine();
+			input.append(ipt);
+			input.flush();
+		}
+		w.close();
+	}
+	public static void TGenerateList(ArrayList<String> entries, Scanner sc) {
 		System.out.println("End generation on what hour?");
 		int maxHR = sc.nextInt();
 		System.out.println("Use Pomodoro technique?");
@@ -77,18 +79,8 @@ public class DPIO {
 		w.close();
 			
 	}
-	public static void ModifyEntry(ArrayList<String> entries, Scanner sc, boolean onFile) throws IOException {
-	System.out.println("Which entry would you like to modify?");
-	int i = onFile ? 1 : 0;
-	for( ; i < entries.size(); i++) {
-		System.out.println(String.format("%d. %s", i+1, entries.get(i)));
-	}
-	System.out.println("\n");
-	int choice = sc.nextInt();
-	choice--;
-	sc.nextLine();
-	System.out.println("Input modified entry:");
-	String mod = sc.nextLine();
+	public static void ModifyEntry(ArrayList<String> entries, String mod, int choice, boolean onFile) throws IOException {
+	
 	if(onFile) {
 	File f = new File(entries.get(choice) + ".list");
 	Path source = Paths.get(f.getAbsolutePath());
@@ -99,19 +91,9 @@ public class DPIO {
 	
 	
 }
-	public static void DeleteEntry(ArrayList<String> entries, Scanner sc, boolean onFile) {
+	public static void DeleteEntry(ArrayList<String> entries, int choice, boolean onFile) {
 	
-	for(int i = 0; i < entries.size(); i++) {
-		System.out.println(String.format("%d. %s", i+1, entries.get(i)));
-	}
-	System.out.println("\n");
-	int choice;
-	do {
-	System.out.println("Which would you like to delete?");
-	choice = sc.nextInt();
-	choice--;
-	System.out.println("Write True to confirm or False to cancel.");
-	} while(sc.nextBoolean());
+	
 	if(onFile) {
 		File f = new File(entries.get(choice)+".list");		
 		System.out.println("Deleting table " + choice + ": " + entries.get(choice));
@@ -132,7 +114,7 @@ public class DPIO {
 	
 }
 	public static boolean[] ReadArgs(String[] args) {
-		boolean[] pargs = new boolean[2];
+		boolean[] pargs = {false, false};
 		for(int i = 0; i < args.length; i++) {
 			if(args[i].equals("--help") || args[i].equals("-h")) {
 				System.exit(0);
