@@ -1,12 +1,11 @@
 package com.thevintagetyrolean.dplanner.client;
 
-import com.thevintagetyrolean.dplanner.client.ClientText;
-
 import java.awt.Font;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.awt.event.*;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,9 +19,9 @@ public static final int WINDOW_LENGTH = 800;
 public static final int WINDOW_WIDTH = 600;
 public static void main(String[] args) {
 	
-		boolean modes[] = DPIO.ReadArgs(args);
-		if(!modes[0]) {
-			DGUIMode(modes[1]);
+		boolean modes[] = DPIO.ReadArgs(args); //Read command line arguments
+		if(!modes[0]) { //if NoGui false
+			DGUIMode(modes[1]); 
 		} else {
 			ClientText.DTextMode(modes[1]);
 		}
@@ -36,13 +35,13 @@ static void DGUIMode(boolean verbose) {
 	window.setSize(WINDOW_WIDTH, WINDOW_LENGTH);
 	
 	
-	ArrayList<String> fileList = new ArrayList<String>();
+	ArrayList<String> fileList = new ArrayList<String>(); //List of available entry storages.
 	DPIO.ReadFile(fileList, "startup.cfg");
 	String username = fileList.get(0);
 	window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	window.setResizable(false);
-	DrawMenuScreen(window, username, fileList);
-	SwingUtilities.updateComponentTreeUI(window);
+	DrawMenuScreen(window, username, fileList); //Draw storage pick screen.
+	SwingUtilities.updateComponentTreeUI(window); //Refresh
 	
 	window.setLayout(null);
 	window.setVisible(true);
@@ -84,7 +83,7 @@ private static void DrawMenuScreen(JFrame window, String username, ArrayList<Str
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(files.getSelectedIndex() != 0) {
-				DrawFunctionScreen(window, fileList, files.getSelectedIndex());
+				DrawFunctionScreen(window, fileList, files.getSelectedIndex()); //Draw screen with storage manipulation options.
 			}
 			
 		}
@@ -101,6 +100,70 @@ private static void DrawFunctionScreen(JFrame window, ArrayList<String> fileList
 	JButton modLB = new JButton("Modify List");
 	JButton delLB = new JButton("Delete List");
 	JButton extB = new JButton("Exit");
+	genB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+		
+	});
+	addB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+		
+	});
+	modB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
+	delB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
+	addLB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
+	modLB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
+	delLB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
+	extB.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO Make gui for this
+		}
+		
+	});
 	pickPanel.add(genB);
 	pickPanel.add(addB);
 	pickPanel.add(modB);
@@ -109,12 +172,25 @@ private static void DrawFunctionScreen(JFrame window, ArrayList<String> fileList
 	pickPanel.add(modLB);
 	pickPanel.add(delLB);
 	pickPanel.add(extB);
+	window.add(pickPanel);
+	
 }
+public static void GGen() {
+	//Gui Generate
+	JCheckBox pomodoro = new JCheckBox("Use Pomodoro Technique?");
+	//TODO Finish generation in GUI
+}
+//TODO Finish other functions in GUI
 }
 
 class ComboRenderer extends BasicComboBoxRenderer {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public Dimension getPreferredSize() {
         return new Dimension(200, 80);
     } 

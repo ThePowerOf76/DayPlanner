@@ -18,36 +18,39 @@ public class ClientText {
 		System.out.println("Loading primary config...");
 		Scanner sc = new Scanner(System.in);
 		try {
-			ArrayList<String> entryList = new ArrayList<String>();
-			ArrayList<String> fileList = new ArrayList<String>();
-			DPIO.ReadFile(fileList, "startup.cfg");
+			ArrayList<String> entryList = new ArrayList<String>(); //List of entries in a storage list.
+			ArrayList<String> fileList = new ArrayList<String>(); //List of storage lists.
+			DPIO.ReadFile(fileList, "startup.cfg"); //Base file, contains all lists and username.
 			String username = fileList.get(0);
 
 			System.out.println("Welcome " + username);
 			if(fileList.size() < 2) {
+				//If no list available.
 				System.out.println("No list created. \nInput name for database: ");
 				String name = sc.nextLine();
 				DPIO.AppendToList(fileList, name, true);
 				DPIO.TextDBPopulate(name, sc);
 				DPIO.SyncList(entryList, "startup.cfg");
 			}
-
+			//show list
 			for(int i = 1; i < fileList.size(); i++) {
 				System.out.println(i + ". " + fileList.get(i));
 
 			}
 			int pick;
+			//pick a list.
 			do {
 				System.out.println("Pick a list.");
 				pick = sc.nextInt();
 			} while(!(pick > 0 && pick < fileList.size()));
 			String currentList = fileList.get(pick) + ".list";
 			DPIO.ReadFile(entryList, currentList);
+			//clear input buffer
 			sc.nextLine();
 			System.out.println("Entries read.");
 			System.out.println("What will you do? \n \"Generate\" List | \"Add\" entries | \"Modify\" Entries | \"Delete\" Entries | \n\"Add List\" | \"Modify List\" | \"Delete List\" | \"Exit\"");
 			String entry;
-
+			//pick what to do with list
 			while(true) {
 				entry = sc.nextLine();
 				if(entry.toLowerCase().equals("generate")) {
@@ -157,6 +160,7 @@ public class ClientText {
 
 
 		} catch (FileNotFoundException e) {
+			//If primary config file missing.
 			System.out.println("Primary config file missing.");
 			File entry = new File("startup.cfg");
 			try {

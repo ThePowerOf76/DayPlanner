@@ -1,7 +1,5 @@
 package com.thevintagetyrolean.dplanner.client;
 
 public class ClientGui {
-	public static void GenerateG() {
-		
-	}
+	//TODO move GUI control from Client to here.
 }

@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 public class DPIO {
 	public static void AppendToList(ArrayList<String> entries, String s, boolean onFile) throws IOException {
+		//Append + create file if adding new storage.
 		entries.add(s);
 		if(onFile) {
 			File f = new File(s + ".list");
@@ -27,6 +28,7 @@ public class DPIO {
 		
 	}
 	public static void TextDBPopulate(String filename, Scanner sc) throws IOException {
+		//Multi append to list upon new storage creation.
 		File f = new File(filename + ".list");
 		String ipt;
 		FileWriter w = new FileWriter(f);
@@ -40,10 +42,11 @@ public class DPIO {
 		w.close();
 	}
 	public static void TGenerateList(ArrayList<String> entries, Scanner sc) {
+		//Text mode list generation.
 		System.out.println("End generation on what hour?");
 		int maxHR = sc.nextInt();
 		System.out.println("Use Pomodoro technique?");
-		boolean usePom = sc.nextBoolean();
+		boolean usePom = sc.nextBoolean();//Pomodoro 
 		int breakLength, activityLength;
 		if(!usePom) {
 			System.out.println("Input activity length(in minutes)");
@@ -68,7 +71,7 @@ public class DPIO {
 		}
 	}
 	public static void SyncList(ArrayList<String> entries, String fileName) throws IOException {
-		
+		//Update file
 		FileWriter w = new FileWriter(fileName);
 		BufferedWriter input = new BufferedWriter(w);
 		for(int i = 0; i < entries.size(); i++) {
@@ -80,7 +83,7 @@ public class DPIO {
 			
 	}
 	public static void ModifyEntry(ArrayList<String> entries, String mod, int choice, boolean onFile) throws IOException {
-	
+	//Change filename if working on storage and change name in the list of storages
 	if(onFile) {
 	File f = new File(entries.get(choice) + ".list");
 	Path source = Paths.get(f.getAbsolutePath());
@@ -92,7 +95,7 @@ public class DPIO {
 	
 }
 	public static void DeleteEntry(ArrayList<String> entries, int choice, boolean onFile) {
-	
+	//Delete file if working on storage/delete entry.
 	
 	if(onFile) {
 		File f = new File(entries.get(choice)+".list");		
@@ -104,6 +107,7 @@ public class DPIO {
 	
 }
 	public static void ReadFile(ArrayList<String> entryList, String file) throws IOException {
+	//Read file and append to ArrayList of choice.
 	FileReader f = new FileReader(file);
 	BufferedReader output = new BufferedReader(f);
 	String entry;
@@ -117,10 +121,13 @@ public class DPIO {
 		boolean[] pargs = {false, false};
 		for(int i = 0; i < args.length; i++) {
 			if(args[i].equals("--help") || args[i].equals("-h")) {
+				//TODO make this display the manual.
 				System.exit(0);
 			} else if(args[i].equals("--no-gui") || args[i].equals("-n")) {
+				//Launch in text mode
 				pargs[0] = true;
 			} else if(args[i].equals("--verbose") || args[i].equals("-v")) {
+				//Additional debug information.
 				pargs[1] = true;
 			}
 		}
